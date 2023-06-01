@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_01_192040) do
+ActiveRecord::Schema.define(version: 2023_06_01_203122) do
 
   create_table "doors", force: :cascade do |t|
     t.boolean "is_sliding", default: false, null: false
@@ -56,12 +56,10 @@ ActiveRecord::Schema.define(version: 2023_06_01_192040) do
 
   create_table "vehicle_types", force: :cascade do |t|
     t.text "name"
-    t.boolean "has_doors", default: true, null: false
-    t.boolean "has_sliding_doors", default: false, null: false
-    t.boolean "has_seat", default: false, null: false
     t.integer "door_count", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "sliding_door_count", default: 0, null: false
   end
 
   create_table "vehicles", force: :cascade do |t|

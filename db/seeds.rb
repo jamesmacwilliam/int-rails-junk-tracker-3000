@@ -6,8 +6,3 @@ ApplicationRecord.reset_column_information
 Dir[File.join(Rails.root, "db", "seeds", "shared", "*.rb")].sort.each do |seed|
   load seed
 end
-
-# Load seeds applicable to specific environments
-if File.exists?(Rails.root, "db", "seeds", "#{Rails.env.downcase}.rb")
-  load File.join(Rails.root,  "db", "seeds", "#{Rails.env.downcase}.rb")
-end
