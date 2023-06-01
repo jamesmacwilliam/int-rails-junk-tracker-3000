@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_31_110550) do
+ActiveRecord::Schema.define(version: 2023_06_01_192040) do
 
   create_table "doors", force: :cascade do |t|
     t.boolean "is_sliding", default: false, null: false
@@ -71,6 +71,10 @@ ActiveRecord::Schema.define(version: 2023_05_31_110550) do
     t.integer "mileage"
     t.text "promotion_id"
     t.text "registration_id"
+    t.text "headline"
+    t.integer "vehicle_type_id"
+    t.boolean "stacked_ad", default: false, null: false
+    t.index ["vehicle_type_id"], name: "index_vehicles_on_vehicle_type_id"
   end
 
 end

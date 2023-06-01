@@ -17,6 +17,8 @@ gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
+# use sidekiq for for background jobs
+gem "sidekiq", "< 8"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -35,6 +37,16 @@ group :development, :test do
   gem "rspec-rails", "~> 6.0"
   # note: this is included in dev/test to ensure factories are generated
   gem 'factory_bot_rails'
+  # Development server event handler
+  gem "guard",                   "~> 2.18"
+  # Update and install gems when necessary
+  gem "guard-bundler",           "~> 3.0"
+  # Reload the browser when view files change
+  gem "guard-livereload",        "~> 2.5"
+  # Run arbitrary processes from Guardfile
+  gem "guard-process",           "~> 1.2"
+  # Start and restart Rails server when necessary
+  gem "guard-rails",             "~> 0.8"
 end
 
 group :development do
