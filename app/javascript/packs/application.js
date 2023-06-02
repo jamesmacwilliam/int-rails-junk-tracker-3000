@@ -13,60 +13,10 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
-import React from 'react';
+import Vehicles from '../components/Vehicles';
 
-const VehicleForm = (props) => {
-  const {
-    vehicle,
-  } = props;
-
-  const handleSubmit = async (e) => {
-    console.log(e);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="field">
-        <label>Nickname</label>
-        <input id="nickname" type="text" name="nickname" />
-      </div>
-      <button>Submit</button>
-    </form>
-  );
-};
-
-const VehicleList = (props) => {
-  const {
-    vehicles,
-  } = props;
-
-  return (<>
-    <h1>Vehicles</h1>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Nickname</th>
-          <th colSpan="3"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {vehicles.map((vehicle) => (
-          <tr key={vehicle.id}>
-            <td>{vehicle.nickname}</td>
-            <td><a href={`/vehicles/${vehicle.id}/edit`}>Edit</a></td>
-            <td><button type="button">Destroy</button></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <a href="/vehicles/new">New Vehicle</a>
-  </>);
-}
 
 ReactOnRails.register({
-  VehicleList,
-  VehicleForm,
+  Vehicles,
 });
 

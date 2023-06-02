@@ -1,12 +1,9 @@
 class VehiclesController < ApplicationController
   before_action :set_vehicle, only: %i[ show edit update destroy ]
+  before_action :set_ivars, except: %i[update destroy create]
 
   # GET /vehicles or /vehicles.json
-  def index
-    @vehicles = Vehicle.all
-
-    pp @vehicles
-  end
+  def index; end
 
   # GET /vehicles/1 or /vehicles/1.json
   def show
@@ -59,13 +56,19 @@ class VehiclesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_vehicle
-      @vehicle = Vehicle.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def vehicle_params
-      params.permit(:nickname)
-    end
+  def set_ivars
+    @vehicles = Vehicle.order(:nickname)
+    @vehicle_types = VehicleType.order(:name)
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_vehicle
+    @vehicle = Vehicle.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def vehicle_params
+    params.permit(:nickname, :headline, :is_stacked, :vehicle_type_id)
+  end
 end
