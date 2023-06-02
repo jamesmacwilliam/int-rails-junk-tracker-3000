@@ -22,6 +22,7 @@ RSpec.describe VehicleTypePart, type: :model do
     context "on update" do
       it "triggers promotion service only" do
         record.promotion_id = "test 123"
+        record.registration_id = "test 456"
         record.save
         allow(VehicleRegistrationService).to receive(:register_vehicle).and_return("test")
         allow(VehiclePromotionService).to receive(:update_ad).and_return("test")

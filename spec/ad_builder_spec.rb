@@ -64,6 +64,7 @@ describe "AdBuilder" do
         vehicle.nickname = "~~~ 2009 Dodge Caravan ~~~"
         vehicle.mileage = 5_134
         vehicle.save
+        vehicle.doors.destroy_all
         create(:vehicle_part, vehicle: vehicle, part_status: works, part: engine)
         create_list(:door, 2, vehicle: vehicle, is_sliding: true)
         create_list(:door, 2, vehicle: vehicle)

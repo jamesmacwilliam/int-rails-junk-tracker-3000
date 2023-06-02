@@ -18,15 +18,19 @@ class Vehicle < ApplicationRecord
 
   # set defaults to simplify creation from a template
   before_validation do
-    copy_vehicle_type_parts if parts.blank? && vehicle_type&.vehicle_type_parts.present?
-    copy_doors if doors.blank? && vehicle_type&.doors.present?
+    if vehicle_type_id_changed?
+      self.doors = []
+      self.parts = []
+      copy_vehicle_type_parts if vehicle_type&.vehicle_type_parts.present?
+      copy_doors if vehicle_type&.door_count&.positive?
+    end
   end
 
   private
 
   def copy_doors
-    vehicle_type.doors.each do |door|
-      doors.build(is_sliding: door.is_sliding)
+    vehicle_type.door_count.times do |n|
+      doors.build(is_sliding: vehicle_type.sliding_door_count > n)
     end
   end
 

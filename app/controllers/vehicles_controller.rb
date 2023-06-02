@@ -22,37 +22,27 @@ class VehiclesController < ApplicationController
   def create
     @vehicle = Vehicle.new(vehicle_params)
 
-    respond_to do |format|
-      if @vehicle.save
-        format.html { redirect_to @vehicle, notice: "Vehicle was successfully created." }
-        format.json { render :show, status: :created, location: @vehicle }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @vehicle.errors, status: :unprocessable_entity }
-      end
+    if @vehicle.save
+      render json: @vehicle, status: :ok
+    else
+      render json: @vehicle.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /vehicles/1 or /vehicles/1.json
   def update
-    respond_to do |format|
-      if @vehicle.update(vehicle_params)
-        format.html { redirect_to @vehicle, notice: "Vehicle was successfully updated." }
-        format.json { render :show, status: :ok, location: @vehicle }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @vehicle.errors, status: :unprocessable_entity }
-      end
+    if @vehicle.update(vehicle_params)
+      render json: @vehicle, status: :ok
+    else
+      render json: @vehicle.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /vehicles/1 or /vehicles/1.json
   def destroy
     @vehicle.destroy
-    respond_to do |format|
-      format.html { redirect_to vehicles_url, notice: "Vehicle was successfully destroyed." }
-      format.json { head :no_content }
-    end
+
+    render json: @vehicle, status: :ok
   end
 
   private
@@ -69,6 +59,6 @@ class VehiclesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def vehicle_params
-    params.permit(:nickname, :headline, :is_stacked, :vehicle_type_id)
+    params.require(:vehicle).permit(:nickname, :headline, :is_stacked, :vehicle_type_id)
   end
 end

@@ -1,6 +1,10 @@
-import React from 'react';
-import { Formik, FieldArray, ErrorMessage, Field } from 'formik';
+import React, { useCallback, useState } from 'react';
+import { Formik, FieldArray, ErrorMessage, Field, Form } from 'formik';
+import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 import * as Yup from 'yup';
+
+import '../../lib/csrf-token';
 
 const FormInput = ({
   name,
@@ -30,12 +34,28 @@ const FormItemWrapper = ({
 );
 const VehicleForm = ({
   vehicle,
-  vehicleTypes
+  vehicleTypes,
+  onSubmit,
 }) => {
-
-  const handleSubmit = async (values) => {
-    console.log(values);
-  };
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const handleSubmit = useCallback(async (values) => {
+    let url = '/vehicles';
+    let method = 'post';
+    if (values.id) {
+      method = 'put';
+      url += `/${values.id}`;
+    }
+    const ax = axios[method];
+    const headers = { 'Content-Type': 'application/json' };
+    try {
+      const { data } = await ax(url, { vehicle: values }, { headers: headers });
+      onSubmit(data);
+      setSubmitSuccess(true);
+    } catch (error) {
+      console.log('axios error occurred');
+      console.error(error);
+    }
+  }, [axios, setSubmitSuccess]);
 
   const schema = Yup.object().shape({
     nickname: Yup.string().required('required'),
@@ -49,15 +69,18 @@ const VehicleForm = ({
     <Formik
       initialValues={{
         id: vehicle.id,
-        nickname: vehicle.nickname,
+        nickname: vehicle.nickname || '',
         headline: vehicle.headline || '',
-        vehicle_type_id: vehicle.vehicle_type_id,
+        vehicle_type_id: vehicle.vehicle_type_id || vehicleTypes[0].id,
       }}
       validationSchema={schema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, values }) => (
-        <form onSubmit={handleSubmit}>
+        <Form>
+          {submitSuccess && (
+            <Navigate to="/vehicles" replace={true} />
+          )}
           <FormItemWrapper name='nickname' label='Nickname'>
             <FormInput name='nickname' />
           </FormItemWrapper>
@@ -72,7 +95,7 @@ const VehicleForm = ({
             </Field>
           </FormItemWrapper>
           <button type="submit" disabled={isSubmitting}>Submit</button>
-        </form>
+        </Form>
       )}
     </Formik>
   );
