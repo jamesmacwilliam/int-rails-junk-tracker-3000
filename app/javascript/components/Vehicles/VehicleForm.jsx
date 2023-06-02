@@ -48,7 +48,7 @@ const VehicleForm = ({
     const ax = axios[method];
     const headers = { 'Content-Type': 'application/json' };
     try {
-      const { data } = await ax(url, { vehicle: values }, { headers: headers });
+      const { data } = await ax(url, { vehicle: values }, { headers,});
       onSubmit(data);
       setSubmitSuccess(true);
     } catch (error) {

@@ -7,6 +7,7 @@ class VehiclesController < ApplicationController
 
   # GET /vehicles/1 or /vehicles/1.json
   def show
+    render json: @vehicle, status: :ok
   end
 
   # GET /vehicles/new
@@ -15,8 +16,7 @@ class VehiclesController < ApplicationController
   end
 
   # GET /vehicles/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /vehicles or /vehicles.json
   def create
@@ -48,7 +48,7 @@ class VehiclesController < ApplicationController
   private
 
   def set_ivars
-    @vehicles = Vehicle.order(:nickname)
+    @vehicles = Vehicle.includes(:vehicle_type).order(:nickname)
     @vehicle_types = VehicleType.order(:name)
   end
 

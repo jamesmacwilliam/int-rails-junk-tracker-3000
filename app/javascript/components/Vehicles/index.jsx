@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes, useHistory } from 'react-router-dom';
 
 // custom
 import VehicleList from './VehicleList';
 import VehicleForm from './VehicleForm';
+import consumer from '../../channels/consumer';
 
 const Vehicles = ({
   vehicles: rawVehicles,
@@ -31,12 +32,20 @@ const Vehicles = ({
     let copy = JSON.parse(JSON.stringify(vehicles));
     copy.splice(getVehicleIndex(attrs), 1)
     setVehicles(copy);
-  }, [setVehicles, getVehicleIndex]);
+  }, [setVehicles, getVehicleIndex, vehicles]);
   const updateVehicle = useCallback((attrs) => {
-    setVehicles([attrs, ...vehicles]);
-    vehicles[getVehicleIndex(attrs)] = attrs;
-    setVehicles(vehicles);
-  }, [setVehicles, getVehicleIndex]);
+    let copy = JSON.parse(JSON.stringify(vehicles));
+    copy[getVehicleIndex(attrs)] = attrs;
+    setVehicles(copy);
+  }, [setVehicles, getVehicleIndex, vehicles]);
+
+  useEffect(() => {
+    consumer.subscriptions.create({ channel: 'VehicleRegistrationsChannel' }, {
+      received(data) {
+        updateVehicle(JSON.parse(data));
+      },
+    });
+  }, [vehicles, updateVehicle, consumer])
 
   return(
     <Router>
@@ -55,12 +64,20 @@ const Vehicles = ({
           />
           <Route path="/vehicles/new"
             element={
-              <VehicleForm vehicle={{}} vehicleTypes={vehicleTypes} onSubmit={addVehicle} />
+              <VehicleForm
+                vehicle={{}}
+                vehicleTypes={vehicleTypes}
+                onSubmit={addVehicle}
+              />
             }
           />
           <Route path="/vehicles/:id/edit"
             element={
-              <VehicleForm vehicle={vehicle} vehicleTypes={vehicleTypes} onSubmit={updateVehicle} />
+              <VehicleForm
+                vehicle={vehicle}
+                vehicleTypes={vehicleTypes}
+                onSubmit={updateVehicle}
+              />
             }
           />
         </Routes>

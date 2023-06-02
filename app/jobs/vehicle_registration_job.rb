@@ -6,6 +6,7 @@ class VehicleRegistrationJob < ApplicationJob
 
     VehicleRegistrationService.register_vehicle(vehicle).tap do |registration_id|
       vehicle.update(registration_id: registration_id)
+      VehicleRegistrationsChannel.broadcast(vehicle)
     end
   end
 end

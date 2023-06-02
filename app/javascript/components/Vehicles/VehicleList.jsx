@@ -26,14 +26,18 @@ const VehicleList = ({
     <table>
       <thead>
         <tr>
+          <th>Type</th>
           <th>Nickname</th>
+          <th>Registration ID</th>
           <th colSpan="3"></th>
         </tr>
       </thead>
       <tbody>
         {vehicles.map((vehicle) => (
           <tr key={vehicle.id}>
+            <td>{vehicle.vehicle_type.name}</td>
             <td>{vehicle.nickname}</td>
+            <td>{vehicle.registration_id || 'pending'}</td>
             <td><Link to={`/vehicles/${vehicle.id}/edit`} onClick={() => { navById(vehicle.id) }}>Edit</Link></td>
             <td><button onClick={() => { handleDelete(vehicle) }} type="button">Destroy</button></td>
           </tr>

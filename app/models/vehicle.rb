@@ -26,6 +26,10 @@ class Vehicle < ApplicationRecord
     end
   end
 
+  def as_json(*attrs)
+    super(*attrs).merge(vehicle_type: vehicle_type)
+  end
+
   private
 
   def copy_doors
