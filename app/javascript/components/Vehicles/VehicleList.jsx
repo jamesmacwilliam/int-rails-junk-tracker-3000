@@ -39,12 +39,14 @@ const VehicleList = ({
             <td>{vehicle.nickname}</td>
             <td>{vehicle.registration_id || 'pending'}</td>
             <td><Link to={`/vehicles/${vehicle.id}/edit`} onClick={() => { navById(vehicle.id) }}>Edit</Link></td>
-            <td><button onClick={() => { handleDelete(vehicle) }} type="button">Destroy</button></td>
+            <td><button className="btn btn-secondary" onClick={() => { handleDelete(vehicle) }} type="button">Destroy</button></td>
           </tr>
         ))}
       </tbody>
     </table>
-    <Link to='/vehicles/new' onClick={() => { navById() }}>New Vehicle</Link>
+    <p style={{ marginTop: '1rem' }}>
+      <Link to='/vehicles/new' onClick={() => { navById() }}>New Vehicle</Link>
+    </p>
   </div>);
 };
 export default VehicleList;

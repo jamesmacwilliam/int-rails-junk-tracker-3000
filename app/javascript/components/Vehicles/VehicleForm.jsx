@@ -94,7 +94,7 @@ const VehicleForm = ({
               ))}
             </Field>
           </FormItemWrapper>
-          <button type="submit" disabled={isSubmitting}>Submit</button>
+          <button className="btn btn-primary" type="submit" disabled={isSubmitting}>Submit</button>
         </Form>
       )}
     </Formik>
